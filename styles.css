@@ -28,5 +28,6 @@ header {
 
 .cool-notes-container {
   display: flex;
+  flex-flow: row wrap;
   gap: 1rem;
 }
