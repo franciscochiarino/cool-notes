@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="./application.js" type="module"></script>
+  <script src="./components/cool-note.js" type="module"></script>
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/nes.css@latest/css/nes.min.css" rel="stylesheet" />
+
+  <title>Document</title>
+</head>
+
+<body>
+  <header>
+    <i class="snes-logo"></i>
+    <h1>Cool Notes</h1>
+    <i class="snes-logo"></i>
+  </header>
+
+  <!-- <i class="nes-ash"></i> -->
+  <section class="content">
+    <a href="#" class="nes-badge">
+      <span class="is-warning">pinned</span>
+    </a>
+
+    <div class="cool-notes-container">
+      <cool-note>
+        <h3 slot="task">Street market</h3>
+        <ul slot="description">
+          <li>Oranges</li>
+          <li>Apples</li>
+          <li>Pears</li>
+          <li>Bananas</li>
+          <li>Strawberries</li>
+          <li>Blueberries</li>
+        </ul>
+      </cool-note>
+      <cool-note>
+        <h3 slot="task">Thoughts</h3>
+        <p slot="description">
+          Everyone has a different opinion about you, so there is no point in worrying about it or trying to convince
+          them
+          otherwise.
+        </p>
+      </cool-note>
+      <cool-note>
+        <h3 slot="task">Southern Sayings</h3>
+        <p slot="description">
+          He's so cheap he wouldn't give a nickel to see Jesus ridin' a bicycle.
+        </p>
+      </cool-note>
+    </div>
+  </section>
+</body>
+
+</html>

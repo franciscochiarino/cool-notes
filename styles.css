@@ -1,0 +1,32 @@
+body {
+  background-color: black;
+  color: white;
+}
+
+/* Typography */
+
+body {
+  font-family: 'Press Start 2P', cursive;
+}
+
+/* Layout */
+
+h1 {
+  display: inline;
+}
+
+header {
+  text-align: center;
+  padding: 3rem 0;
+}
+
+.content {
+  max-width: 1114px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.cool-notes-container {
+  display: flex;
+  gap: 1rem;
+}
