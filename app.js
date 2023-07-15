@@ -36,6 +36,7 @@ class MainApp extends HTMLElement {
 
       <div class="app">
         <c-header></c-header>
+        <c-modal open="true"></c-modal>
         <c-note-group count="${this.pinnedNotesCount}" group="pinned"></c-note-group>
         <c-note-group count="${this.otherNotesCount}" group="other"></c-note-group>
 

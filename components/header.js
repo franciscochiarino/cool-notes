@@ -14,17 +14,26 @@ class Header extends HTMLElement {
         header {
           text-align: center;
           padding: 3rem 0;
+          display: flex;
         }
 
         h1 {
           display: inline;
         }
+
+        .right-elements {
+          margin-left: auto;
+        }
       </style>
 
       <header>
-        <i class="snes-jp-logo"></i>
-        <h1>Cool Notes</h1>
-        <i class="snes-jp-logo"></i>
+        <div>
+          <h1>Cool Notes</h1>
+        </div>
+
+        <div class="right-elements">
+          <c-create-note-button></c-create-note-button>
+        </div>
       </header>
     `;
   }
