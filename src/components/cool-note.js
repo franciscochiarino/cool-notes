@@ -11,7 +11,7 @@ template.innerHTML = `
 
   <div class="cool-note">
     <div class="nes-container is-rounded">
-      <slot name="task"></slot>
+      <slot name="title"></slot>
       <slot name="description"></slot>
 
       <button type="button" class="nes-btn is-success"></button>
