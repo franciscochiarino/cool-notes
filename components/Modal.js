@@ -30,6 +30,12 @@ class Modal extends HTMLElement {
           z-index: 9999;
         }
 
+        label,
+        .dialog-content,
+        .dialog-buttons {
+          margin-top: 1.5rem;
+        }
+
         .dialog-message {
           display: flex;
         }
@@ -49,7 +55,22 @@ class Modal extends HTMLElement {
           </div>
 
           <div class="dialog-content">
-            <p>Alert: this is a dialog.</p>
+            <div class="nes-field">
+              <label for="name_field">Title</label>
+              <input type="text" id="name_field" class="nes-input">
+            </div>
+
+            <div class="nes-field">
+              <label for="textarea_field">Textarea</label>
+              <textarea id="textarea_field" class="nes-textarea"></textarea>
+            </div>
+
+            <div class="nes-field">
+              <label>
+                <input type="checkbox" class="nes-checkbox" checked />
+                <span>Pin</span>
+              </label>
+            </div>
           </div>
 
           <div class="dialog-buttons">
