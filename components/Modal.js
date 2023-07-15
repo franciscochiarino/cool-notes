@@ -1,3 +1,5 @@
+import { setLocalStorage, getLocalStorage, randomId } from "../utils.js";
+
 class Modal extends HTMLElement {
   constructor() {
     super();
@@ -6,7 +8,7 @@ class Modal extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['open', 'close-modal'];
+    return ['open', 'update-note-groups'];
   }
 
   get open() {
@@ -17,12 +19,12 @@ class Modal extends HTMLElement {
     this.setAttribute('open', value);
   }
 
-  get closeModal() {
-    return this.getAttribute('close-modal');
+  get updateNoteGroups() {
+    return this.getAttribute('update-note-groups');
   }
 
-  set closeModal(value) {
-    this.setAttribute('close-modal', value);
+  set updateNoteGroups(value) {
+    this.setAttribute('update-note-groups', value);
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -33,6 +35,7 @@ class Modal extends HTMLElement {
     }
 
     if (name === 'open' && this.open === 'false') {
+      document.body.style.backgroundColor = 'white';
       this.render();
     }
   }
@@ -48,13 +51,6 @@ class Modal extends HTMLElement {
   handleCancelButtonClick() {
     this.open = 'false';
     document.body.style.backgroundColor = 'white';
-
-    let closeModal =
-      this.closeModal && typeof window[this.closeModal] === 'function'
-        ? window[this.closeModal]
-        : console.error('No close modal defined for this modal');
-
-    closeModal();
   }
 
   handleConfirmButtonClick() {
@@ -62,9 +58,24 @@ class Modal extends HTMLElement {
     this.textarea = this.root.querySelector('#textarea');
     this.checkbox = this.root.querySelector('.nes-checkbox');
 
-    console.log(this.titleInput.value);
-    console.log(this.textarea.value);
-    console.log(this.checkbox.checked);
+    let newNote = {
+      id: randomId(),
+      title: this.titleInput.value,
+      description: this.textarea.value,
+      pinned: this.checkbox.checked.toString()
+    };
+
+    this.notes = getLocalStorage('notes');
+    this.notes.push(newNote);
+    setLocalStorage(this.notes);
+
+    let updateNoteGroups =
+      this.updateNoteGroups && typeof window[this.updateNoteGroups] === 'function'
+        ? window[this.updateNoteGroups]
+        : console.error('No update note group defined for this note');
+
+    updateNoteGroups(this.notes);
+    this.open = 'false';
   }
 
   render() {
