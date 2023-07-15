@@ -17,7 +17,7 @@ app.innerHTML = `
 
   <div class="app">
     <c-header></c-header>
-    <c-pinned-notes count="${pinnedNotesCount}"></c-pinned-notes>
+    <c-note-group count="${pinnedNotesCount}" group="pinned"></c-note-group>
     <c-other-notes></c-other-notes>
   </div>
   `;

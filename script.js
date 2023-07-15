@@ -8,7 +8,7 @@ function deleteNote(e) {
 
 function updatePinnedNotes(count) {
   const app = document.querySelector('c-app');
-  const pinnedNotes = app.shadowRoot.querySelector('c-pinned-notes');
+  const pinnedNotes = app.shadowRoot.querySelector('c-note-group');
 
   pinnedNotes.setAttribute('count', count);
 }

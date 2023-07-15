@@ -15,7 +15,7 @@ const renderPinnedNotes = (notes) => {
   return content;
 };
 
-class PinnedNotes extends HTMLElement {
+class NoteGroup extends HTMLElement {
   constructor() {
     super();
 
@@ -24,7 +24,11 @@ class PinnedNotes extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['count'];
+    return ['count', 'group'];
+  }
+
+  get group() {
+    return this.getAttribute('group');
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -42,19 +46,20 @@ class PinnedNotes extends HTMLElement {
             display: block;
           }
 
-          .pinned-notes {
+          .note-group {
             display: flex;
             flex-flow: row wrap;
             gap: 1rem;
+            margin-top: 1rem;
             margin-bottom: 3rem;
           }
       </style>
 
       <section>
         <a href="#" class="nes-badge">
-          <span class="is-warning">pinned</span>
+          <c-badge type="${this.group}"></c-badge>
         </a>
-        <div class="pinned-notes">
+        <div class="note-group">
           ${renderPinnedNotes(notes)}
         </div>
       </section>
@@ -62,4 +67,4 @@ class PinnedNotes extends HTMLElement {
   }
 }
 
-customElements.define('c-pinned-notes', PinnedNotes)
+customElements.define('c-note-group', NoteGroup)
