@@ -6,7 +6,7 @@ const renderPinnedNotes = () => {
 
   for (let note of pinnedNotes) {
     notes += `
-      <cool-note pinned="${note.pinned}">
+      <cool-note pinned="${note.pinned}" action="deleteNote">
         <h3 slot="title">${note.title}</h3>
         <p slot="description">${note.description}</p>
       </cool-note>
@@ -27,12 +27,14 @@ template.innerHTML = `
     }
   </style>
 
-  <a href="#" class="nes-badge">
-    <span class="is-warning">pinned</span>
-  </a>
-  <div class="pinned-notes">
-    ${renderPinnedNotes()}
-  </div>
+  <section>
+    <a href="#" class="nes-badge">
+      <span class="is-warning">pinned</span>
+    </a>
+    <div class="pinned-notes">
+      ${renderPinnedNotes()}
+    </div>
+  </section>
 `;
 
 class PinnedNotes extends HTMLElement {

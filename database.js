@@ -14,7 +14,7 @@ export const notes = [
   {
     id: 3,
     title: 'Questions',
-    description: "Why do we park in driveways and drive on parkways?\n\nIf two mind readers read each other's minds, whose mind are they actually reading?",
+    description: "Why do we park in driveways and drive on parkways?\nIf two mind readers read each other's minds, whose mind are they actually reading?",
     pinned: 'true'
   }
 ];
