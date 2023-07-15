@@ -6,9 +6,13 @@ function deleteNote(e) {
   note.parentNode.removeChild(note);
 }
 
-function updatePinnedNotes(count) {
+function updateNoteGroups(notes) {
   const app = document.querySelector('c-app');
-  const pinnedNotes = app.shadowRoot.querySelector('c-note-group');
+  const pinnedNotes = app.shadowRoot.querySelector('c-note-group[group="pinned"]');
+  const otherNotes = app.shadowRoot.querySelector('c-note-group[group="other"]');
+  const pinnedNotesCount = notes.filter(note => note.pinned === 'true').length;
+  const otherNotesCount = notes.filter(note => note.pinned === 'false').length;
 
-  pinnedNotes.setAttribute('count', count);
+  pinnedNotes.setAttribute('count', pinnedNotesCount);
+  otherNotes.setAttribute('count', otherNotesCount);
 }

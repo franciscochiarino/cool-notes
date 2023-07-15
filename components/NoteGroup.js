@@ -1,12 +1,13 @@
 import { notes } from '../database.js';
 
-const renderPinnedNotes = (notes) => {
-  let pinnedNotes = notes.filter(note => note.pinned === 'true');
+const renderNotes = (notes, group) => {
+  let isPinned = group === 'pinned';
+  let filteredNotes = notes.filter(note => note.pinned === isPinned.toString());
   let content = '';
 
-  for (let note of pinnedNotes) {
+  for (let note of filteredNotes) {
     content += `
-      <c-note id="${note.id}" pinned="${note.pinned}" remove="deleteNote" update-pinned="updatePinnedNotes">
+      <c-note id="${note.id}" pinned="${note.pinned}" remove="deleteNote" update-note-groups="updateNoteGroups">
         <h3 slot="title">${note.title}</h3>
         <p slot="description">${note.description}</p>
       </c-note>
@@ -31,6 +32,10 @@ class NoteGroup extends HTMLElement {
     return this.getAttribute('group');
   }
 
+  get count() {
+    return this.getAttribute('count');
+  }
+
   attributeChangedCallback(name, oldValue, newValue) {
     if (name === 'count') {
       this.render();
@@ -38,7 +43,9 @@ class NoteGroup extends HTMLElement {
   }
 
   render() {
-    this.root.innerHTML = `
+    if (!parseInt(this.count)) return this.root.innerHTML = '';
+
+    return this.root.innerHTML = `
       <style>
           @import url('https://unpkg.com/nes.css/css/nes.min.css');
 
@@ -60,7 +67,7 @@ class NoteGroup extends HTMLElement {
           <c-badge type="${this.group}"></c-badge>
         </a>
         <div class="note-group">
-          ${renderPinnedNotes(notes)}
+          ${renderNotes(notes, this.group)}
         </div>
       </section>
       `;

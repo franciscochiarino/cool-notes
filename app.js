@@ -1,6 +1,7 @@
 import { notes } from './database.js';
 
 const pinnedNotesCount = notes.filter(note => note.pinned === 'true').length;
+const otherNotesCount = notes.filter(note => note.pinned === 'false').length;
 
 const app = document.createElement('template');
 app.innerHTML = `
@@ -18,7 +19,7 @@ app.innerHTML = `
   <div class="app">
     <c-header></c-header>
     <c-note-group count="${pinnedNotesCount}" group="pinned"></c-note-group>
-    <c-other-notes></c-other-notes>
+    <c-note-group count="${otherNotesCount}" group="other"></c-note-group>
   </div>
   `;
 

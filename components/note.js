@@ -45,7 +45,7 @@ class Note extends HTMLElement {
         let remove =
           this.remove && typeof window[this.remove] === 'function'
             ? window[this.remove]
-            : this.defaultRemoveFallback;
+            : this.removeFallback;
 
         remove(e);
       });
@@ -67,13 +67,12 @@ class Note extends HTMLElement {
     const note = notes.find(note => note.id === id);
     Object.assign(note, attributes);
 
-    const pinnedNotesCount = notes.filter(note => note.pinned === 'true').length;
-    let updatePinned =
-      this.updatePinned && typeof window[this.updatePinned] === 'function'
-        ? window[this.updatePinned]
-        : this.defaultUpdatePinnedFallback;
+    let updateNoteGroups =
+      this.updateNoteGroups && typeof window[this.updateNoteGroups] === 'function'
+        ? window[this.updateNoteGroups]
+        : this.updateNoteGroupsFallback;
 
-    updatePinned(pinnedNotesCount);
+    updateNoteGroups(notes);
   };
 
   toogglePinned() {
@@ -83,12 +82,16 @@ class Note extends HTMLElement {
     this.updateNote(parseInt(this.id), { pinned: nextPinnedState });
   }
 
-  defaultRemoveFallback() {
+  removeFallback() {
     console.error('No delete defined for this note');
   }
 
+  updateNoteGroupsFallback() {
+    console.error('No update note group defined for this note');
+  }
+
   static get observedAttributes() {
-    return ['pinned', 'remove', 'id', 'update-pinned'];
+    return ['pinned', 'remove', 'id', 'update-note-groups'];
   }
 
   get pinned() {
@@ -111,12 +114,12 @@ class Note extends HTMLElement {
     return this.getAttribute('id');
   }
 
-  get updatePinned() {
-    return this.getAttribute('update-pinned');
+  get updateNoteGroups() {
+    return this.getAttribute('update-note-groups');
   }
 
-  set updatePinned(value) {
-    this.setAttribute('update-pinned', value);
+  set updateNoteGroups(value) {
+    this.setAttribute('update-note-groups', value);
   }
 }
 
