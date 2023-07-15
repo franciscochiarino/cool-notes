@@ -1,15 +1,16 @@
-import { notes } from '../../database.js';
+import { notes } from '../database.js';
 
 const pinnedNotes = notes.filter(note => note.pinned === 'true');
+
 const renderPinnedNotes = () => {
   let notes = '';
 
   for (let note of pinnedNotes) {
     notes += `
-      <cool-note pinned="${note.pinned}" action="deleteNote">
+      <c-note pinned="${note.pinned}" action="deleteNote">
         <h3 slot="title">${note.title}</h3>
         <p slot="description">${note.description}</p>
-      </cool-note>
+      </c-note>
     `;
   }
   return notes;

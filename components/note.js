@@ -3,13 +3,13 @@ template.innerHTML = `
   <style>
     @import url('https://unpkg.com/nes.css/css/nes.min.css');
 
-    .cool-note {
+    .c-note {
       width: 350px;
     }
 
   </style>
 
-  <div class="cool-note">
+  <div class="c-note">
     <div class="nes-container is-rounded">
       <slot name="title"></slot>
       <slot name="description"></slot>
@@ -40,8 +40,6 @@ class CoolNote extends HTMLElement {
 
     deleteButtons.forEach(deleteButton => {
       deleteButton.addEventListener('click', (e) => {
-        console.log('this.action')
-        console.log(window[this.action])
         let action =
           this.action && typeof window[this.action] === 'function'
             ? window[this.action]
@@ -92,4 +90,4 @@ class CoolNote extends HTMLElement {
   }
 }
 
-customElements.define('cool-note', CoolNote)
+customElements.define('c-note', CoolNote)

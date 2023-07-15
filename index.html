@@ -4,10 +4,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="./application.js"></script>
-  <script src="./src/components/main-app.js" type="module"></script>
-  <script src="./src/components/cool-note.js" type="module"></script>
-  <script src="./src/components/pinned-notes.js" type="module"></script>
+  <script src="./script.js"></script>
+  <script src="./app.js" type="module"></script>
+  <script src="./components/header.js" type="module"></script>
+  <script src="./components/pinned-notes.js" type="module"></script>
+  <script src="./components/note.js" type="module"></script>
 
   <link rel="stylesheet" href="./styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,47 +20,7 @@
 </head>
 
 <body>
-  <header>
-    <i class="snes-jp-logo"></i>
-    <h1>Cool Notes</h1>
-    <i class="snes-jp-logo"></i>
-  </header>
-
-  <main-app></main-app>
-  <!-- <i class="nes-ash"></i> -->
-  <!-- <section class="content">
-    <a href="#" class="nes-badge">
-      <span class="is-warning">pinned</span>
-    </a>
-
-    <div class="cool-notes-container">
-      <cool-note pinned="true" action="togglePinned">
-        <h3 slot="title">Street market</h3>
-        <ul slot="description">
-          <li>Oranges</li>
-          <li>Apples</li>
-          <li>Pears</li>
-          <li>Bananas</li>
-          <li>Strawberries</li>
-          <li>Blueberries</li>
-        </ul>
-      </cool-note>
-      <cool-note pinned="true">
-        <h3 slot="title">Thoughts</h3>
-        <p slot="description">
-          Everyone has a different opinion about you, so there is no point in worrying about it or trying to convince
-          them
-          otherwise.
-        </p>
-      </cool-note>
-      <cool-note pinned="true">
-        <h3 slot="title">Southern Sayings</h3>
-        <p slot="description">
-          He's so cheap he wouldn't give a nickel to see Jesus ridin' a bicycle.
-        </p>
-      </cool-note>
-    </div>
-  </section> -->
+  <c-app></c-app>
 
   <section class="content">
     <a href="#" class="nes-badge">

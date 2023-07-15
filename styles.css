@@ -8,26 +8,3 @@ body {
 body {
   font-family: 'Press Start 2P', cursive;
 }
-
-/* Layout */
-
-h1 {
-  display: inline;
-}
-
-header {
-  text-align: center;
-  padding: 3rem 0;
-}
-
-.content {
-  max-width: 1114px;
-  margin: 0 auto 4rem;
-  padding: 0 1rem;
-}
-
-.cool-notes-container {
-  display: flex;
-  flex-flow: row wrap;
-  gap: 1rem;
-}
