@@ -1,93 +1,54 @@
 import { notes } from '../database.js';
 
-const template = document.createElement('template');
-template.innerHTML = `
-  <style>
-    @import url('https://unpkg.com/nes.css/css/nes.min.css');
-
-    .c-note {
-      width: 350px;
-    }
-
-  </style>
-
-  <div class="c-note">
-    <div class="nes-container is-rounded">
-      <slot name="title"></slot>
-      <slot name="description"></slot>
-
-      <button type="button" class="nes-btn is-success"></button>
-      <button type="button" class="nes-btn is-error">Delete</button>
-    </div>
-  </div>
-`;
-
 class Note extends HTMLElement {
   constructor() {
     super();
 
-    const root = this.attachShadow({ mode: 'open' });
-    root.append(template.content.cloneNode(true));
+    this.root = this.attachShadow({ mode: 'open' });
+    this.handlePinButtonClick = this.handlePinButtonClick.bind(this);
+    this.render();
 
-    this.toogglePinned = this.toogglePinned.bind(this);
-
-    const pinButtons = root.querySelectorAll('button.is-success');
-    const deleteButtons = root.querySelectorAll('button.is-error');
-
-    pinButtons.forEach((pinButton) => {
-      pinButton.addEventListener('click', (e) => {
-        this.toogglePinned(e)
-      });
-    });
-
-    deleteButtons.forEach(deleteButton => {
-      deleteButton.addEventListener('click', (e) => {
-        let remove =
-          this.remove && typeof window[this.remove] === 'function'
-            ? window[this.remove]
-            : this.removeFallback;
-
-        remove(e);
-      });
-    });
+    this.pinButtons = this.root.querySelectorAll('button.is-success');
+    this.deleteButtons = this.root.querySelectorAll('button.is-error');
+    this.bindEvents();
   }
 
-  attributeChangedCallback(name, oldValue, newValue) {
-    if (name === 'pinned') {
-      const pinButton = this.shadowRoot.querySelector('button.is-success');
-
-      if (newValue === 'true')
-        pinButton.innerText = 'Unpin';
-      else
-        pinButton.innerText = 'Pin';
-    }
+  attributeChangedCallback(name, _, newValue) {
+    if (name === 'pinned') this.togglePinButtonText(newValue);
   }
 
-  updateNote = (id, attributes) => {
+  updateNoteAndNoteGroups = (id, attributes) => {
     const note = notes.find(note => note.id === id);
     Object.assign(note, attributes);
 
     let updateNoteGroups =
       this.updateNoteGroups && typeof window[this.updateNoteGroups] === 'function'
         ? window[this.updateNoteGroups]
-        : this.updateNoteGroupsFallback;
+        : console.error('No update note group defined for this note');
 
     updateNoteGroups(notes);
   };
 
-  toogglePinned() {
+  togglePinButtonText(newValue) {
+    const pinButton = this.shadowRoot.querySelector('button.is-success');
+
+    newValue === 'true' ? pinButton.innerText = 'Unpin' : pinButton.innerText = 'Pin';
+  }
+
+  handlePinButtonClick() {
     const nextPinnedState = this.pinned === 'true' ? 'false' : 'true';
 
     this.pinned = nextPinnedState;
-    this.updateNote(parseInt(this.id), { pinned: nextPinnedState });
+    this.updateNoteAndNoteGroups(parseInt(this.id), { pinned: nextPinnedState });
   }
 
-  removeFallback() {
-    console.error('No delete defined for this note');
-  }
+  handleDeleteButtonClick(e) {
+    let remove =
+      this.remove && typeof window[this.remove] === 'function'
+        ? window[this.remove]
+        : console.error('No delete defined for this note');
 
-  updateNoteGroupsFallback() {
-    console.error('No update note group defined for this note');
+    remove(e);
   }
 
   static get observedAttributes() {
@@ -120,6 +81,43 @@ class Note extends HTMLElement {
 
   set updateNoteGroups(value) {
     this.setAttribute('update-note-groups', value);
+  }
+
+  bindEvents() {
+    this.pinButtons.forEach((pinButton) => {
+      pinButton.addEventListener('click', (e) => {
+        this.handlePinButtonClick(e)
+      });
+    });
+
+    this.deleteButtons.forEach(deleteButton => {
+      deleteButton.addEventListener('click', (e) => {
+        this.handleDeleteButtonClick(e);
+      });
+    });
+  }
+
+  render() {
+    this.root.innerHTML = `
+      <style>
+        @import url('https://unpkg.com/nes.css/css/nes.min.css');
+
+        .c-note {
+          width: 350px;
+        }
+
+      </style>
+
+      <div class="c-note">
+        <div class="nes-container is-rounded">
+          <slot name="title"></slot>
+          <slot name="description"></slot>
+
+          <button type="button" class="nes-btn is-success"></button>
+          <button type="button" class="nes-btn is-error">Delete</button>
+        </div>
+      </div>
+    `;
   }
 }
 
