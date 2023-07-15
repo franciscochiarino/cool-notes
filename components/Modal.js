@@ -39,7 +39,10 @@ class Modal extends HTMLElement {
 
   bindEvents() {
     this.cancelButton = this.root.querySelector('.cancel');
+    this.confirmButton = this.root.querySelector('.confirm');
+
     this.cancelButton.addEventListener('click', () => this.handleCancelButtonClick());
+    this.confirmButton.addEventListener('click', () => this.handleConfirmButtonClick());
   }
 
   handleCancelButtonClick() {
@@ -52,6 +55,16 @@ class Modal extends HTMLElement {
         : console.error('No close modal defined for this modal');
 
     closeModal();
+  }
+
+  handleConfirmButtonClick() {
+    this.titleInput = this.root.querySelector('#title');
+    this.textarea = this.root.querySelector('#textarea');
+    this.checkbox = this.root.querySelector('.nes-checkbox');
+
+    console.log(this.titleInput.value);
+    console.log(this.textarea.value);
+    console.log(this.checkbox.checked);
   }
 
   render() {
@@ -91,13 +104,13 @@ class Modal extends HTMLElement {
 
           <div class="dialog-content">
             <div class="nes-field">
-              <label for="name_field">Title</label>
-              <input type="text" id="name_field" class="nes-input">
+              <label for="title">Title</label>
+              <input type="text" id="title" class="nes-input">
             </div>
 
             <div class="nes-field">
-              <label for="textarea_field">Textarea</label>
-              <textarea id="textarea_field" class="nes-textarea"></textarea>
+              <label for="textarea">Textarea</label>
+              <textarea id="textarea" class="nes-textarea"></textarea>
             </div>
 
             <div class="nes-field">
@@ -110,7 +123,7 @@ class Modal extends HTMLElement {
 
           <div class="dialog-buttons">
             <button class="nes-btn cancel">Cancel</button>
-            <button class="nes-btn is-primary">Confirm</button>
+            <button class="nes-btn is-primary confirm">Confirm</button>
           </div>
         </dialog>
       </section>

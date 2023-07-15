@@ -1,55 +1,16 @@
-import { getNotes, setNotes } from '../utils.js';
+import { getLocalStorage, setLocalStorage } from '../utils.js';
 class Note extends HTMLElement {
   constructor() {
     super();
 
     this.root = this.attachShadow({ mode: 'open' });
-    this.notes = getNotes();
+    this.notes = getLocalStorage('notes');
     this.handlePinButtonClick = this.handlePinButtonClick.bind(this);
     this.render();
 
     this.pinButtons = this.root.querySelectorAll('button.is-success');
     this.deleteButtons = this.root.querySelectorAll('button.is-error');
     this.bindEvents();
-  }
-
-  attributeChangedCallback(name, _, newValue) {
-    if (name === 'pinned') this.togglePinButtonText(newValue);
-  }
-
-  updateNoteAndNoteGroups = (id, attributes) => {
-    const note = this.notes.find(note => note.id === id);
-    Object.assign(note, attributes);
-    setNotes(this.notes);
-
-    let updateNoteGroups =
-      this.updateNoteGroups && typeof window[this.updateNoteGroups] === 'function'
-        ? window[this.updateNoteGroups]
-        : console.error('No update note group defined for this note');
-
-    updateNoteGroups(this.notes);
-  };
-
-  togglePinButtonText(newValue) {
-    const pinButton = this.shadowRoot.querySelector('button.is-success');
-
-    newValue === 'true' ? pinButton.innerText = 'Unpin' : pinButton.innerText = 'Pin';
-  }
-
-  handlePinButtonClick() {
-    const nextPinnedState = this.pinned === 'true' ? 'false' : 'true';
-
-    this.pinned = nextPinnedState;
-    this.updateNoteAndNoteGroups(parseInt(this.id), { pinned: nextPinnedState });
-  }
-
-  handleDeleteButtonClick(e) {
-    let remove =
-      this.remove && typeof window[this.remove] === 'function'
-        ? window[this.remove]
-        : console.error('No delete defined for this note');
-
-    remove(e, this.id);
   }
 
   static get observedAttributes() {
@@ -82,6 +43,45 @@ class Note extends HTMLElement {
 
   set updateNoteGroups(value) {
     this.setAttribute('update-note-groups', value);
+  }
+
+  attributeChangedCallback(name, _, newValue) {
+    if (name === 'pinned') this.togglePinButtonText(newValue);
+  }
+
+  updateNoteAndNoteGroups = (id, attributes) => {
+    const note = this.notes.find(note => note.id === id);
+    Object.assign(note, attributes);
+    setLocalStorage(this.notes);
+
+    let updateNoteGroups =
+      this.updateNoteGroups && typeof window[this.updateNoteGroups] === 'function'
+        ? window[this.updateNoteGroups]
+        : console.error('No update note group defined for this note');
+
+    updateNoteGroups(this.notes);
+  };
+
+  togglePinButtonText(newValue) {
+    const pinButton = this.shadowRoot.querySelector('button.is-success');
+
+    newValue === 'true' ? pinButton.innerText = 'Unpin' : pinButton.innerText = 'Pin';
+  }
+
+  handlePinButtonClick() {
+    const nextPinnedState = this.pinned === 'true' ? 'false' : 'true';
+
+    this.pinned = nextPinnedState;
+    this.updateNoteAndNoteGroups(this.id, { pinned: nextPinnedState });
+  }
+
+  handleDeleteButtonClick(e) {
+    let remove =
+      this.remove && typeof window[this.remove] === 'function'
+        ? window[this.remove]
+        : console.error('No delete defined for this note');
+
+    remove(e, this.id);
   }
 
   bindEvents() {

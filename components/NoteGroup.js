@@ -1,10 +1,10 @@
-import { getNotes } from '../utils.js';
+import { getLocalStorage } from '../utils.js';
 class NoteGroup extends HTMLElement {
   constructor() {
     super();
 
     this.root = this.attachShadow({ mode: 'open' });
-    this.notes = getNotes();
+    this.notes = getLocalStorage('notes');
     this.render();
   }
 
@@ -22,7 +22,7 @@ class NoteGroup extends HTMLElement {
 
   attributeChangedCallback(name, oldValue, newValue) {
     if (name === 'count') {
-      this.notes = getNotes();
+      this.notes = getLocalStorage('notes');
       this.render();
     }
   }
