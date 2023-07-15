@@ -109,7 +109,7 @@ class Modal extends HTMLElement {
           <div class="dialog-message">
             <i class="nes-ash"></i>
             <div class="nes-balloon from-left">
-              <p>Hey there my friend!</p>
+              <p>Have fun creating Notes!</p>
             </div>
           </div>
 
