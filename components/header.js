@@ -32,7 +32,7 @@ class Header extends HTMLElement {
         </div>
 
         <div class="right-elements">
-          <c-open-modal-button action="openModal"></c-open-modal-button>
+          <c-open-modal-button open-modal="openModal"></c-open-modal-button>
         </div>
       </header>
     `;

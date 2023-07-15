@@ -1,4 +1,4 @@
-import { getLocalStorage, setLocalStorage } from '../utils.js';
+import { getCallback, getLocalStorage, setLocalStorage } from '../utils.js';
 class Note extends HTMLElement {
   constructor() {
     super();
@@ -7,6 +7,7 @@ class Note extends HTMLElement {
     this.notes = getLocalStorage('notes');
     this.handlePinButtonClick = this.handlePinButtonClick.bind(this);
     this.render();
+    this.assignCallbacks();
 
     this.pinButtons = this.root.querySelectorAll('button.is-success');
     this.deleteButtons = this.root.querySelectorAll('button.is-error');
@@ -14,7 +15,11 @@ class Note extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['pinned', 'remove', 'id', 'update-note-groups'];
+    return ['id', 'pinned', 'delete-note', 'update-note-groups'];
+  }
+
+  get id() {
+    return this.getAttribute('id');
   }
 
   get pinned() {
@@ -25,16 +30,12 @@ class Note extends HTMLElement {
     this.setAttribute('pinned', value);
   }
 
-  get remove() {
-    return this.getAttribute('remove');
+  get deleteNote() {
+    return this.getAttribute('delete-note');
   }
 
-  set remove(value) {
-    this.setAttribute('remove', value);
-  }
-
-  get id() {
-    return this.getAttribute('id');
+  set deleteNote(value) {
+    this.setAttribute('delete-note', value);
   }
 
   get updateNoteGroups() {
@@ -49,17 +50,17 @@ class Note extends HTMLElement {
     if (name === 'pinned') this.togglePinButtonText(newValue);
   }
 
+  assignCallbacks() {
+    this.updateNoteGroupsCallback = getCallback(this.updateNoteGroups);
+    this.deleteNoteCallback = getCallback(this.deleteNote);
+  }
+
   updateNoteAndNoteGroups = (id, attributes) => {
     const note = this.notes.find(note => note.id === id);
     Object.assign(note, attributes);
     setLocalStorage(this.notes);
 
-    let updateNoteGroups =
-      this.updateNoteGroups && typeof window[this.updateNoteGroups] === 'function'
-        ? window[this.updateNoteGroups]
-        : console.error('No update note group defined for this note');
-
-    updateNoteGroups(this.notes);
+    this.updateNoteGroupsCallback(this.notes);
   };
 
   togglePinButtonText(newValue) {
@@ -76,12 +77,7 @@ class Note extends HTMLElement {
   }
 
   handleDeleteButtonClick(e) {
-    let remove =
-      this.remove && typeof window[this.remove] === 'function'
-        ? window[this.remove]
-        : console.error('No delete defined for this note');
-
-    remove(e, this.id);
+    this.deleteNoteCallback(e, this.id);
   }
 
   bindEvents() {

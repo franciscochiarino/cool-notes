@@ -1,4 +1,4 @@
-import { setLocalStorage, getLocalStorage, randomId } from "../utils.js";
+import { setLocalStorage, getLocalStorage, randomId, getCallback } from "../utils.js";
 
 class Modal extends HTMLElement {
   constructor() {
@@ -8,7 +8,7 @@ class Modal extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['open', 'update-note-groups'];
+    return ['open', 'hide-overlay', 'update-note-groups'];
   }
 
   get open() {
@@ -17,6 +17,14 @@ class Modal extends HTMLElement {
 
   set open(value) {
     this.setAttribute('open', value);
+  }
+
+  get hideOverlay() {
+    return this.getAttribute('hide-overlay');
+  }
+
+  set hideOverlay(value) {
+    this.setAttribute('hide-overlay', value);
   }
 
   get updateNoteGroups() {
@@ -29,13 +37,12 @@ class Modal extends HTMLElement {
 
   attributeChangedCallback(name, oldValue, newValue) {
     if (name === 'open' && this.open === 'true') {
-      document.body.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
       this.render();
       this.bindEvents();
+      this.assignCallbacks();
     }
 
     if (name === 'open' && this.open === 'false') {
-      document.body.style.backgroundColor = 'white';
       this.render();
     }
   }
@@ -48,9 +55,14 @@ class Modal extends HTMLElement {
     this.confirmButton.addEventListener('click', () => this.handleConfirmButtonClick());
   }
 
+  assignCallbacks() {
+    this.hideOverlayCallback = getCallback(this.hideOverlay);
+    this.updateNoteGroupsCallback = getCallback(this.updateNoteGroups);
+  }
+
   handleCancelButtonClick() {
     this.open = 'false';
-    document.body.style.backgroundColor = 'white';
+    this.hideOverlayCallback();
   }
 
   handleConfirmButtonClick() {
@@ -69,13 +81,9 @@ class Modal extends HTMLElement {
     this.notes.push(newNote);
     setLocalStorage(this.notes);
 
-    let updateNoteGroups =
-      this.updateNoteGroups && typeof window[this.updateNoteGroups] === 'function'
-        ? window[this.updateNoteGroups]
-        : console.error('No update note group defined for this note');
-
-    updateNoteGroups(this.notes);
+    this.updateNoteGroupsCallback(this.notes);
     this.open = 'false';
+    this.hideOverlayCallback();
   }
 
   render() {

@@ -25,6 +25,13 @@ function updateNoteGroups(notes) {
 function openModal() {
   const app = document.querySelector('c-app');
   const modal = app.shadowRoot.querySelector('c-modal');
+  const overlay = document.querySelector('c-overlay');
 
   modal.setAttribute('open', 'true');
+  overlay.setAttribute('is-modal-open', 'true');
+}
+
+function hideOverlay() {
+  const overlay = document.querySelector('c-overlay');
+  overlay.setAttribute('is-modal-open', 'false');
 }

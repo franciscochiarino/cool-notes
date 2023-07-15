@@ -1,3 +1,5 @@
+import { getCallback } from '../utils.js';
+
 class OpenModalButton extends HTMLElement {
   constructor() {
     super();
@@ -11,24 +13,21 @@ class OpenModalButton extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['action'];
+    return ['open-modal'];
   }
 
-  get action() {
-    return this.getAttribute('action');
+  get openModal() {
+    return this.getAttribute('open-modal');
   }
 
-  set action(value) {
-    this.setAttribute('action', value);
+  set openModal(value) {
+    this.setAttribute('open-modal', value);
   }
 
   handleOnClick() {
-    let openModal =
-      this.action && typeof window[this.action] === 'function'
-        ? window[this.action]
-        : console.error('No action defined for this button');
+    this.openModalCallback = getCallback(this.openModal);
 
-    openModal();
+    this.openModalCallback();
   }
 
   render() {
