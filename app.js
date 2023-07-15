@@ -3,10 +3,20 @@ import { notes } from './database.js';
 class MainApp extends HTMLElement {
   constructor() {
     super();
-    this.pinnedNotesCount = notes.filter(note => note.pinned === 'true').length;
-    this.otherNotesCount = notes.filter(note => note.pinned === 'false').length;
 
     this.root = this.attachShadow({ mode: 'open' });
+    this.notes = JSON.parse(localStorage.getItem('notes')) || null;
+  }
+
+  connectedCallback() {
+    if (!this.notes) {
+      localStorage.setItem('notes', JSON.stringify(notes));
+      this.notes = notes;
+    }
+
+    this.pinnedNotesCount = this.notes.filter(note => note.pinned === 'true').length;
+    this.otherNotesCount = this.notes.filter(note => note.pinned === 'false').length;
+
     this.render();
   }
 

@@ -1,10 +1,9 @@
-import { notes } from '../database.js';
-
 class NoteGroup extends HTMLElement {
   constructor() {
     super();
 
     this.root = this.attachShadow({ mode: 'open' });
+    this.notes = JSON.parse(localStorage.getItem('notes'));
     this.render();
   }
 
@@ -22,6 +21,7 @@ class NoteGroup extends HTMLElement {
 
   attributeChangedCallback(name, oldValue, newValue) {
     if (name === 'count') {
+      this.notes = JSON.parse(localStorage.getItem('notes'));
       this.render();
     }
   }
@@ -68,7 +68,7 @@ class NoteGroup extends HTMLElement {
           <c-badge type="${this.group}"></c-badge>
         </a>
         <div class="note-group">
-          ${this.renderNotes(notes, this.group)}
+          ${this.renderNotes(this.notes, this.group)}
         </div>
       </section>
       `;
