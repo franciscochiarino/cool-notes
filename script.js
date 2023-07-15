@@ -21,3 +21,10 @@ function updateNoteGroups(notes) {
   pinnedNotes.setAttribute('count', pinnedNotesCount);
   otherNotes.setAttribute('count', otherNotesCount);
 }
+
+function openModal() {
+  const app = document.querySelector('c-app');
+  const modal = app.shadowRoot.querySelector('c-modal');
+
+  modal.setAttribute('open', 'true');
+}

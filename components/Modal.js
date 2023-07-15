@@ -3,7 +3,6 @@ class Modal extends HTMLElement {
     super();
 
     this.root = this.attachShadow({ mode: 'open' });
-    this.render();
   }
 
   static get observedAttributes() {
@@ -17,11 +16,13 @@ class Modal extends HTMLElement {
   attributeChangedCallback(name, oldValue, newValue) {
     if (name === 'open' && this.open === 'true') {
       document.body.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-      // this.render();
+      this.render();
     }
   }
 
   render() {
+    if (this.open !== 'true') return this.root.innerHTML = '';
+
     return this.root.innerHTML = `
       <style>
         @import url('https://unpkg.com/nes.css/css/nes.min.css');
