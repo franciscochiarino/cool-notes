@@ -1,9 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
 })
 
-function deleteNote(e) {
+function deleteNote(e, id) {
   const note = e.target.closest('.c-note');
   note.parentNode.removeChild(note);
+
+  const notes = JSON.parse(localStorage.getItem('notes'));
+  const noteIndex = notes.findIndex(note => note.id === id);
+  notes.splice(noteIndex, 1);
+  localStorage.setItem('notes', JSON.stringify(notes));
 }
 
 function updateNoteGroups(notes) {

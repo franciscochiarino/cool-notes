@@ -48,7 +48,7 @@ class Note extends HTMLElement {
         ? window[this.remove]
         : console.error('No delete defined for this note');
 
-    remove(e);
+    remove(e, this.id);
   }
 
   static get observedAttributes() {
