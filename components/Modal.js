@@ -109,7 +109,7 @@ class Modal extends HTMLElement {
           <div class="dialog-message">
             <i class="nes-ash"></i>
             <div class="nes-balloon from-left">
-              <p>Have fun creating Notes!</p>
+              <p>Have fun creating notes!</p>
             </div>
           </div>
 
@@ -120,7 +120,7 @@ class Modal extends HTMLElement {
             </div>
 
             <div class="nes-field">
-              <label for="textarea">Textarea</label>
+              <label for="textarea">Description</label>
               <textarea id="textarea" class="nes-textarea"></textarea>
             </div>
 
