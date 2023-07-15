@@ -1,9 +1,10 @@
+import { getNotes } from '../utils.js';
 class NoteGroup extends HTMLElement {
   constructor() {
     super();
 
     this.root = this.attachShadow({ mode: 'open' });
-    this.notes = JSON.parse(localStorage.getItem('notes'));
+    this.notes = getNotes();
     this.render();
   }
 
@@ -21,7 +22,7 @@ class NoteGroup extends HTMLElement {
 
   attributeChangedCallback(name, oldValue, newValue) {
     if (name === 'count') {
-      this.notes = JSON.parse(localStorage.getItem('notes'));
+      this.notes = getNotes();
       this.render();
     }
   }

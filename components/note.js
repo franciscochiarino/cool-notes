@@ -1,9 +1,10 @@
+import { getNotes, setNotes } from '../utils.js';
 class Note extends HTMLElement {
   constructor() {
     super();
 
     this.root = this.attachShadow({ mode: 'open' });
-    this.notes = JSON.parse(localStorage.getItem('notes'));
+    this.notes = getNotes();
     this.handlePinButtonClick = this.handlePinButtonClick.bind(this);
     this.render();
 
@@ -19,7 +20,7 @@ class Note extends HTMLElement {
   updateNoteAndNoteGroups = (id, attributes) => {
     const note = this.notes.find(note => note.id === id);
     Object.assign(note, attributes);
-    localStorage.setItem('notes', JSON.stringify(this.notes));
+    setNotes(this.notes);
 
     let updateNoteGroups =
       this.updateNoteGroups && typeof window[this.updateNoteGroups] === 'function'

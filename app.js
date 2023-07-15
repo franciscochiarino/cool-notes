@@ -1,16 +1,17 @@
 import { notes } from './database.js';
+import { getNotes, setNotes } from './utils.js';
 
 class MainApp extends HTMLElement {
   constructor() {
     super();
 
     this.root = this.attachShadow({ mode: 'open' });
-    this.notes = JSON.parse(localStorage.getItem('notes')) || null;
+    this.notes = getNotes() || null;
   }
 
   connectedCallback() {
     if (!this.notes) {
-      localStorage.setItem('notes', JSON.stringify(notes));
+      setNotes(notes);
       this.notes = notes;
     }
 
