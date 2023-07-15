@@ -1,5 +1,8 @@
-const app = document.createElement('template');
+import { notes } from './database.js';
 
+const pinnedNotesCount = notes.filter(note => note.pinned === 'true').length;
+
+const app = document.createElement('template');
 app.innerHTML = `
   <style>
     @import url('https://unpkg.com/nes.css/css/nes.min.css');
@@ -14,7 +17,8 @@ app.innerHTML = `
 
   <div class="app">
     <c-header></c-header>
-    <pinned-notes></pinned-notes>
+    <c-pinned-notes count="${pinnedNotesCount}"></c-pinned-notes>
+    <c-other-notes></c-other-notes>
   </div>
   `;
 

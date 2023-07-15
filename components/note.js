@@ -1,3 +1,5 @@
+import { notes } from '../database.js';
+
 const template = document.createElement('template');
 template.innerHTML = `
   <style>
@@ -20,7 +22,7 @@ template.innerHTML = `
   </div>
 `;
 
-class CoolNote extends HTMLElement {
+class Note extends HTMLElement {
   constructor() {
     super();
 
@@ -34,18 +36,18 @@ class CoolNote extends HTMLElement {
 
     pinButtons.forEach((pinButton) => {
       pinButton.addEventListener('click', (e) => {
-        this.toogglePinned()
+        this.toogglePinned(e)
       });
     });
 
     deleteButtons.forEach(deleteButton => {
       deleteButton.addEventListener('click', (e) => {
-        let action =
-          this.action && typeof window[this.action] === 'function'
-            ? window[this.action]
-            : this.defaultActionFallback;
+        let remove =
+          this.remove && typeof window[this.remove] === 'function'
+            ? window[this.remove]
+            : this.defaultRemoveFallback;
 
-        action(e);
+        remove(e);
       });
     });
   }
@@ -61,16 +63,32 @@ class CoolNote extends HTMLElement {
     }
   }
 
+  updateNote = (id, attributes) => {
+    const note = notes.find(note => note.id === id);
+    Object.assign(note, attributes);
+
+    const pinnedNotesCount = notes.filter(note => note.pinned === 'true').length;
+    let updatePinned =
+      this.updatePinned && typeof window[this.updatePinned] === 'function'
+        ? window[this.updatePinned]
+        : this.defaultUpdatePinnedFallback;
+
+    updatePinned(pinnedNotesCount);
+  };
+
   toogglePinned() {
-    this.pinned = this.pinned === 'true' ? 'false' : 'true';
+    const nextPinnedState = this.pinned === 'true' ? 'false' : 'true';
+
+    this.pinned = nextPinnedState;
+    this.updateNote(parseInt(this.id), { pinned: nextPinnedState });
   }
 
-  defaultActionFallback(e) {
-    console.error('No action defined for this note');
+  defaultRemoveFallback() {
+    console.error('No delete defined for this note');
   }
 
   static get observedAttributes() {
-    return ['pinned', 'action'];
+    return ['pinned', 'remove', 'id', 'update-pinned'];
   }
 
   get pinned() {
@@ -81,13 +99,25 @@ class CoolNote extends HTMLElement {
     this.setAttribute('pinned', value);
   }
 
-  get action() {
-    return this.getAttribute('action');
+  get remove() {
+    return this.getAttribute('remove');
   }
 
-  set action(value) {
-    this.setAttribute('action', value);
+  set remove(value) {
+    this.setAttribute('remove', value);
+  }
+
+  get id() {
+    return this.getAttribute('id');
+  }
+
+  get updatePinned() {
+    return this.getAttribute('update-pinned');
+  }
+
+  set updatePinned(value) {
+    this.setAttribute('update-pinned', value);
   }
 }
 
-customElements.define('c-note', CoolNote)
+customElements.define('c-note', Note)

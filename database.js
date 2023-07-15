@@ -16,5 +16,17 @@ export const notes = [
     title: 'Questions',
     description: "Why do we park in driveways and drive on parkways?\nIf two mind readers read each other's minds, whose mind are they actually reading?",
     pinned: 'true'
+  },
+  {
+    id: 4,
+    title: 'Thoughts',
+    description: 'People have different opinions on how to live life, but everyone is just trying to figure it out.',
+    pinned: 'false'
+  },
+  {
+    id: 5,
+    title: 'Southern Sayings',
+    description: "He's got his nose so high in the air, he could drown in a rainstorm.",
+    pinned: 'false'
   }
 ];

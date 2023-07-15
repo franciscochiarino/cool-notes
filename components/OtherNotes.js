@@ -1,11 +1,11 @@
 import { notes } from '../database.js';
 
-const pinnedNotes = notes.filter(note => note.pinned === 'true');
+const otherNotes = notes.filter(note => note.pinned === 'false');
 
-const renderPinnedNotes = () => {
+const renderOtherNotes = () => {
   let notes = '';
 
-  for (let note of pinnedNotes) {
+  for (let note of otherNotes) {
     notes += `
       <c-note pinned="${note.pinned}" action="deleteNote">
         <h3 slot="title">${note.title}</h3>
@@ -21,24 +21,26 @@ template.innerHTML = `
   <style>
     @import url('https://unpkg.com/nes.css/css/nes.min.css');
 
-    .pinned-notes {
+    .other-notes {
       display: flex;
       flex-flow: row wrap;
       gap: 1rem;
+      margin-bottom: 3rem;
     }
   </style>
 
   <section>
     <a href="#" class="nes-badge">
-      <span class="is-warning">pinned</span>
+      <span class="is-dark">others</span>
     </a>
-    <div class="pinned-notes">
-      ${renderPinnedNotes()}
+
+    <div class="other-notes">
+      ${renderOtherNotes()}
     </div>
   </section>
 `;
 
-class PinnedNotes extends HTMLElement {
+class OtherNotes extends HTMLElement {
   constructor() {
     super();
 
@@ -47,4 +49,4 @@ class PinnedNotes extends HTMLElement {
   }
 }
 
-customElements.define('pinned-notes', PinnedNotes)
+customElements.define('c-other-notes', OtherNotes);
