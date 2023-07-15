@@ -1,21 +1,5 @@
 import { notes } from '../database.js';
 
-const renderNotes = (notes, group) => {
-  let isPinned = group === 'pinned';
-  let filteredNotes = notes.filter(note => note.pinned === isPinned.toString());
-  let content = '';
-
-  for (let note of filteredNotes) {
-    content += `
-      <c-note id="${note.id}" pinned="${note.pinned}" remove="deleteNote" update-note-groups="updateNoteGroups">
-        <h3 slot="title">${note.title}</h3>
-        <p slot="description">${note.description}</p>
-      </c-note>
-    `;
-  }
-  return content;
-};
-
 class NoteGroup extends HTMLElement {
   constructor() {
     super();
@@ -42,6 +26,23 @@ class NoteGroup extends HTMLElement {
     }
   }
 
+  renderNotes(notes, group) {
+    let isPinned = group === 'pinned';
+    let filteredNotes = notes.filter(note => note.pinned === isPinned.toString());
+    let content = '';
+
+    for (let note of filteredNotes) {
+      content += `
+        <c-note id="${note.id}" pinned="${note.pinned}" remove="deleteNote" update-note-groups="updateNoteGroups">
+          <h3 slot="title">${note.title}</h3>
+          <p slot="description">${note.description}</p>
+        </c-note>
+      `;
+    }
+
+    return content;
+  };
+
   render() {
     if (!parseInt(this.count)) return this.root.innerHTML = '';
 
@@ -67,7 +68,7 @@ class NoteGroup extends HTMLElement {
           <c-badge type="${this.group}"></c-badge>
         </a>
         <div class="note-group">
-          ${renderNotes(notes, this.group)}
+          ${this.renderNotes(notes, this.group)}
         </div>
       </section>
       `;
