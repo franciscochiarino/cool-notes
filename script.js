@@ -28,3 +28,10 @@ function openModal() {
 
   modal.setAttribute('open', 'true');
 }
+
+function closeModal() {
+  const app = document.querySelector('c-app');
+  const modal = app.shadowRoot.querySelector('c-modal');
+
+  modal.setAttribute('open', 'false');
+}

@@ -6,18 +6,52 @@ class Modal extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['open'];
+    return ['open', 'close-modal'];
   }
 
   get open() {
     return this.getAttribute('open');
   }
 
+  set open(value) {
+    this.setAttribute('open', value);
+  }
+
+  get closeModal() {
+    return this.getAttribute('close-modal');
+  }
+
+  set closeModal(value) {
+    this.setAttribute('close-modal', value);
+  }
+
   attributeChangedCallback(name, oldValue, newValue) {
     if (name === 'open' && this.open === 'true') {
       document.body.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
       this.render();
+      this.bindEvents();
     }
+
+    if (name === 'open' && this.open === 'false') {
+      this.render();
+    }
+  }
+
+  bindEvents() {
+    this.cancelButton = this.root.querySelector('.cancel');
+    this.cancelButton.addEventListener('click', () => this.handleCancelButtonClick());
+  }
+
+  handleCancelButtonClick() {
+    this.open = 'false';
+    document.body.style.backgroundColor = 'white';
+
+    let closeModal =
+      this.closeModal && typeof window[this.closeModal] === 'function'
+        ? window[this.closeModal]
+        : console.error('No close modal defined for this modal');
+
+    closeModal();
   }
 
   render() {
@@ -75,7 +109,7 @@ class Modal extends HTMLElement {
           </div>
 
           <div class="dialog-buttons">
-            <button class="nes-btn">Cancel</button>
+            <button class="nes-btn cancel">Cancel</button>
             <button class="nes-btn is-primary">Confirm</button>
           </div>
         </dialog>
