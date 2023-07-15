@@ -34,7 +34,7 @@ class NoteGroup extends HTMLElement {
 
     for (let note of filteredNotes) {
       content += `
-        <c-note id="${note.id}" pinned="${note.pinned}" delete-note="deleteNote" update-note-groups="updateNoteGroups">
+        <c-note id="${note.id}" pinned="${note.pinned}" update-note-groups="updateNoteGroups">
           <h3 slot="title">${note.title}</h3>
           <p slot="description">${note.description}</p>
         </c-note>

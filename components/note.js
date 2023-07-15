@@ -15,7 +15,7 @@ class Note extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['id', 'pinned', 'delete-note', 'update-note-groups'];
+    return ['id', 'pinned', 'update-note-groups'];
   }
 
   get id() {
@@ -28,14 +28,6 @@ class Note extends HTMLElement {
 
   set pinned(value) {
     this.setAttribute('pinned', value);
-  }
-
-  get deleteNote() {
-    return this.getAttribute('delete-note');
-  }
-
-  set deleteNote(value) {
-    this.setAttribute('delete-note', value);
   }
 
   get updateNoteGroups() {
@@ -52,7 +44,6 @@ class Note extends HTMLElement {
 
   assignCallbacks() {
     this.updateNoteGroupsCallback = getCallback(this.updateNoteGroups);
-    this.deleteNoteCallback = getCallback(this.deleteNote);
   }
 
   updateNoteAndNoteGroups = (id, attributes) => {
@@ -76,8 +67,13 @@ class Note extends HTMLElement {
     this.updateNoteAndNoteGroups(this.id, { pinned: nextPinnedState });
   }
 
-  handleDeleteButtonClick(e) {
-    this.deleteNoteCallback(e, this.id);
+  handleDeleteButtonClick(id) {
+    const notes = JSON.parse(localStorage.getItem('notes'));
+    const noteIndex = notes.findIndex(note => note.id === id);
+
+    notes.splice(noteIndex, 1);
+    localStorage.setItem('notes', JSON.stringify(notes));
+    this.updateNoteGroupsCallback(this.notes);
   }
 
   bindEvents() {
@@ -89,7 +85,7 @@ class Note extends HTMLElement {
 
     this.deleteButtons.forEach(deleteButton => {
       deleteButton.addEventListener('click', (e) => {
-        this.handleDeleteButtonClick(e);
+        this.handleDeleteButtonClick(this.id);
       });
     });
   }
