@@ -14,7 +14,7 @@ template.innerHTML = `
       <slot name="task"></slot>
       <slot name="description"></slot>
 
-      <button type="button" class="nes-btn is-success">Pin</button>
+      <button type="button" class="nes-btn is-success"></button>
       <button type="button" class="nes-btn is-error">Delete</button>
     </div>
   </div>
@@ -24,9 +24,44 @@ class CoolNote extends HTMLElement {
   constructor() {
     super();
 
-    const shadowRoot = this.attachShadow({ mode: 'open' });
-    let clone = template.content.cloneNode(true);
-    shadowRoot.append(clone);
+    const root = this.attachShadow({ mode: 'open' });
+    root.append(template.content.cloneNode(true));
+
+    this.toogglePinned = this.toogglePinned.bind(this);
+
+    const pinButtons = root.querySelectorAll('button.is-success');
+    pinButtons.forEach((pinButton) => {
+      pinButton.addEventListener('click', (e) => {
+        this.toogglePinned()
+      });
+    });
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (name === 'pinned') {
+      const pinButton = this.shadowRoot.querySelector('button.is-success');
+
+      if (newValue === 'true')
+        pinButton.innerText = 'Unpin';
+      else
+        pinButton.innerText = 'Pin';
+    }
+  }
+
+  toogglePinned() {
+    this.pinned = this.pinned === 'true' ? 'false' : 'true';
+  }
+
+  static get observedAttributes() {
+    return ['pinned', 'action'];
+  }
+
+  get pinned() {
+    return this.getAttribute('pinned');
+  }
+
+  set pinned(value) {
+    this.setAttribute('pinned', value);
   }
 }
 
